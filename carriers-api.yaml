@@ -1,0 +1,78 @@
+# this is the MercuryGate Carriers Onboarding API
+swagger: '2.0'
+info:
+  title: MercuryGate Carriers Onboarding API
+  description: MercuryGate Carriers Onboarding API
+  version: "0.1.0"
+# the domain of the service
+host: api.mg.carriers.com
+# array of all schemes that your API supports
+schemes:
+  - http
+  - https
+# will be prefixed to all paths
+basePath: /carriers/api
+consumes:
+  - application/json
+  - application/vnd.com.mercurygate.carriers.v0.1.0+json;charset=UTF-8
+paths:
+  /carriers:
+    get:
+      summary: Carriers
+      description: The Carriers Endpoint.
+      operationId: findCarriers
+      produces:
+        - application/json
+        - application/vnd.com.mercurygate.carriers.v0.1.0+json;charset=UTF-8
+      parameters:
+        - name: latitude
+          in: query
+          description: Latitude component of Carrier Location.
+          required: false
+          type: number
+          format: double
+        - name: longitude
+          in: query
+          description: Longitude component of Carrier Location.
+          required: false
+          type: number
+          format: double
+      tags:
+        - Carriers
+      responses:
+        200:
+          description: An array of Carriers
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Carrier'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Carrier:
+    type: object
+    properties:
+      carrier_id:
+        type: string
+        description: Unique identifier representing a specific carrier for a given latitude & longitude.
+      description:
+        type: string
+        description: Description of carrier.
+      capacity:
+        type: string
+        description: Capacity of carrier.
+      image:
+        type: string
+        description: Image URL representing the carrier.
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
